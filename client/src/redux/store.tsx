@@ -8,6 +8,8 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 import usersReducer from './slice/users.slice';
 import trashReducer from './slice/trash.slice';
+import shopReducer from './slice/client/shop.slice';
+import cartReducer from './slice/client/cart.slice';
 
 const rootReducer = combineReducers({
     themeState: themeReducer,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
     productState: productSliceReducer,
     usersState: usersReducer,
     trashState: trashReducer,
+    clientShopState: shopReducer,
+    clientCartState: cartReducer,
 })
 
 const persistConfig = {

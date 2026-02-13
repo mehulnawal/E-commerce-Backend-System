@@ -4,12 +4,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers } from '../../redux/slice/users.slice';
 import { viewAllCategory } from '../../redux/slice/category.slice';
 import { showAllProducts } from '../../redux/slice/products.slice';
+import { useNavigate } from 'react-router';
 
 const Dashboard = () => {
 
     const { filteredUsers } = useSelector(state => state.usersState);
     const { category, loading } = useSelector(state => state.categoryState);
     const { products } = useSelector(state => state.productState);
+    const { user } = useSelector(state => state.authState);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) return;
+
+        if (user.data?.userRole === 'user') {
+            navigate('/client', { replace: true });
+        }
+    }, [user, navigate]);
 
     const stats = [
         { name: 'Total Users', value: filteredUsers?.length || 0, icon: Users, color: 'blue' },

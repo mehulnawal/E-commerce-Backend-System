@@ -25,6 +25,7 @@ import Checkout from './components/pages/client/checkout';
 import OrderTracking from './components/pages/client/orderTracking';
 import UserDashboard from './components/pages/client/userDashboard';
 import EditProfile from './components/pages/client/editProfile';
+import { ProtectedRoute } from './components/protectedRoute';
 
 const App = () => {
 
@@ -63,7 +64,7 @@ const App = () => {
             <Route index element={<Navigate to="/client/home" replace />} />
             <Route path="home" element={<Home />} />
             <Route path="shop" element={<Shop />} />
-            <Route path="productDetails" element={<ProductDetails />} />
+            <Route path="productDetails/:id" element={<ProductDetails />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="dashboard" element={<UserDashboard />} />
@@ -71,8 +72,13 @@ const App = () => {
             <Route path="editProfile" element={<EditProfile />} />
           </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index p />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute >
+                <AdminLayout />
+              </ProtectedRoute>} >
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="categories" element={<Categories />} />
             <Route path="products" element={<Products />} />
@@ -83,8 +89,11 @@ const App = () => {
             <Route path="admins" element={<Admins />} />
           </Route>
 
-        </Routes>
-      </Router>
+        </Routes >
+
+
+
+      </Router >
     </>
   );
 };

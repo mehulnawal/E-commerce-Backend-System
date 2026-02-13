@@ -30,7 +30,6 @@ export const productsView = async (req, res) => {
         // 1. show all products
         const products = await Product.find({
             productStatus: 'published',
-            userId: validateRefreshToken._id
         }).populate({
             path: 'productCategory'
         });
@@ -75,7 +74,7 @@ export const addNewProduct = async (req, res) => {
 
         // 3. validate details
         const productNameRegex = /^[a-zA-Z0-9\s]+$/;
-        const productDescriptionRegex = /^[a-zA-Z0-9-.,\s]+$/;
+        const productDescriptionRegex = /^[\w\s.,\-:()&!@#$%^*+=\[\]{}|\\;'"<>/?`~\n]+$/;
         const productStatusRegex = ["published", "draft"];
 
         if (!productNameRegex.test(productName))
@@ -365,3 +364,31 @@ export const editProduct = async (req, res) => {
         );
     }
 };
+
+export const singleProductView = async (req, res) => {
+    try {
+
+        /*
+        1. get id from params
+        2. find product by id
+        */
+
+        // get id from params 
+        const { id } = req.params;
+
+        // find product by id
+        const product = await Product.findById(id);
+
+        if (!product) {
+            return res.status(404).json(
+                apiError({ message: "Product not found" })
+            );
+        }
+
+        // 2. send data to frontend
+        return res.status(200).json(apiResponse({ status: 200, message: "All products fetched", data: product }))
+
+    } catch (error) {
+        return res.status(500).json(apiError({ message: "Cannot fetched all products", error: error }));
+    }
+}

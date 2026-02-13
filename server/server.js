@@ -11,6 +11,8 @@ import { authenticateUser } from './src/middleware/authenticate.middleware.js';
 import { checkRole } from './src/middleware/roleBasedAccess.middleware.js';
 import subCategoryRouter from './src/routes/subCategory.route.js';
 import userRouter from './src/routes/user.route.js';
+import clientProductRouter from './src/routes/client/clientProduct.route.js';
+import cartRouter from './src/routes/client/clientCart.route.js';
 dotenv.config();
 const app = express();
 
@@ -32,16 +34,21 @@ connectDB();
 app.use('/api/v1/users/auth/', authRouter);
 
 // products
-app.use('/api/v1/admin/products/', authenticateUser, checkRole, productRouter);
+app.use('/api/v1/admin/products/', authenticateUser, checkRole('admin'), productRouter);
 
 // categories
-app.use('/api/v1/admin/category/', authenticateUser, checkRole, categoryRouter);
+app.use('/api/v1/admin/category/', authenticateUser, checkRole('admin'), categoryRouter);
 
-app.use('/api/v1/admin/subCategory/', authenticateUser, checkRole, subCategoryRouter);
+app.use('/api/v1/admin/subCategory/', authenticateUser, checkRole('admin'), subCategoryRouter);
 
 // users
-app.use('/api/v1/users/', authenticateUser, checkRole, userRouter);
+app.use('/api/v1/users/', authenticateUser, checkRole('admin'), userRouter);
 
+// client products
+app.use('/api/v1/client/products/', authenticateUser, checkRole('user', "admin"), clientProductRouter);
+
+// client cart 
+app.use('/api/v1/cart/', authenticateUser, checkRole('user', "admin"), cartRouter);
 
 // start server
 const PORT = process.env.PORT || 9000

@@ -1,61 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
-// MOCK CART DATA
-const INITIAL_CART = [
-    {
-        _id: "prod1",
-        productName: "Premium Leather Workspace Desk Pad",
-        productPrice: 4500,
-        productImages: ["https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800"],
-        slug: "leather-desk-pad",
-        quantity: 1,
-        stock: 5
-    },
-    {
-        _id: "prod2",
-        productName: "Minimalist Mechanical Keyboard",
-        productPrice: 12000,
-        productImages: ["https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=800"],
-        slug: "mechanical-keyboard",
-        quantity: 1,
-        stock: 3
-    }
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCartItemsFun } from '../../../redux/slice/client/cart.slice';
 
 const Cart = ({ theme = 'dark' }) => {
     const navigate = useNavigate();
-    const [cartItems, setCartItems] = useState(INITIAL_CART);
+
+    const { cart } = useSelector(state => state.clientCartState);
+    const dispatch = useDispatch();
+    console.log(cart);
+
+    useEffect(() => {
+        dispatch(getAllCartItemsFun());
+    }, [dispatch])
 
     // --- LOGIC ---
     const updateQuantity = (id, type) => {
-        setCartItems(items => items.map(item => {
-            if (item._id === id) {
-                const newQty = type === 'inc' ? item.quantity + 1 : item.quantity - 1;
-                if (newQty > item.stock) {
-                    toast.error("Max stock reached!");
-                    return item;
-                }
-                if (newQty < 1) return item;
-                return { ...item, quantity: newQty };
-            }
-            return item;
-        }));
+        // setCartItems(items => items.map(item => {
+        //     if (item._id === id) {
+        //         const newQty = type === 'inc' ? item.quantity + 1 : item.quantity - 1;
+        //         if (newQty > item.stock) {
+        //             toast.error("Max stock reached!");
+        //             return item;
+        //         }
+        //         if (newQty < 1) return item;
+        //         return { ...item, quantity: newQty };
+        //     }
+        //     return item;
+        // }));
     };
 
     const removeItem = (id) => {
-        setCartItems(items => items.filter(item => item._id !== id));
-        toast.success("Item removed");
+        // setCartItems(items => items.filter(item => item._id !== id));
+        // toast.success("Item removed");
     };
 
     // Calculations
-    const subTotal = cartItems.reduce((acc, item) => acc + (item.productPrice * item.quantity), 0);
-    const gstCharges = subTotal * 0.18; // 18% GST
-    const deliveryCharges = subTotal > 2999 ? 0 : 100;
-    const totalPrice = subTotal + gstCharges + deliveryCharges;
+    // const subTotal = cartItems.reduce((acc, item) => acc + (item.productPrice * item.quantity), 0);
+
+    // const gstCharges = subTotal * 0.18; // 18% GST
+    // const deliveryCharges = subTotal > 2999 ? 0 : 100;
+    // const totalPrice = subTotal + gstCharges + deliveryCharges;
 
     return (
         // 1. Wrapper to apply the theme class ('dark' or 'light')
@@ -65,10 +53,10 @@ const Cart = ({ theme = 'dark' }) => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
                     <h1 className="text-3xl font-black tracking-tight mb-8">
-                        Your Cart <span className="text-zinc-400 font-medium text-lg ml-2">({cartItems.length} items)</span>
+                        Your Cart <span className="text-zinc-400 font-medium text-lg ml-2">({cart?.length} items)</span>
                     </h1>
 
-                    {cartItems.length === 0 ? (
+                    {cart?.length === 0 ? (
                         // --- EMPTY STATE ---
                         <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 text-center">
                             <div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-6">
@@ -90,7 +78,7 @@ const Cart = ({ theme = 'dark' }) => {
 
                             {/* Left: Cart Items List */}
                             <div className="lg:col-span-2 space-y-6">
-                                {cartItems.map((item) => (
+                                {cart && cart?.map((item) => (
                                     <motion.div
                                         layout
                                         initial={{ opacity: 0, y: 10 }}
@@ -102,20 +90,20 @@ const Cart = ({ theme = 'dark' }) => {
                                         {/* Image */}
                                         <div
                                             className="w-full sm:w-32 aspect-square bg-zinc-100 dark:bg-zinc-800 rounded-xl overflow-hidden cursor-pointer"
-                                            onClick={() => navigate(`/product/${item.slug}`)}
+                                            onClick={() => navigate(`/product/${item.productId.slug}`)}
                                         >
-                                            <img src={item.productImages[0]} alt={item.productName} className="w-full h-full object-cover" />
+                                            <img src={item?.productId?.productImages[0]} alt={item?.productId?.productName} className="w-full h-full object-cover" />
                                         </div>
 
                                         {/* Details */}
-                                        <div className="flex-1 flex flex-col justify-between">
+                                        <div className="flex-1 flex flex-col justify-between" >
                                             <div>
                                                 <div className="flex justify-between items-start">
                                                     <h3
                                                         className="font-bold text-lg leading-tight cursor-pointer hover:text-indigo-500 transition-colors"
-                                                        onClick={() => navigate(`/product/${item.slug}`)}
+                                                        onClick={() => navigate(`/product/${item.productId.slug}`)}
                                                     >
-                                                        {item.productName}
+                                                        {item?.productId?.productName}
                                                     </h3>
                                                     <button
                                                         onClick={() => removeItem(item._id)}
@@ -131,23 +119,23 @@ const Cart = ({ theme = 'dark' }) => {
                                                 {/* Quantity Control */}
                                                 <div className="flex items-center bg-zinc-100 dark:bg-zinc-800 rounded-lg px-3 py-1.5 border border-zinc-200 dark:border-zinc-700">
                                                     <button
-                                                        onClick={() => updateQuantity(item._id, 'dec')}
+                                                        onClick={() => updateQuantity(item?._id, 'dec')}
                                                         className="p-1 hover:text-indigo-500 disabled:opacity-30"
-                                                        disabled={item.quantity <= 1}
+                                                        disabled={item?.quantity <= 1}
                                                     >
                                                         <Minus size={16} />
                                                     </button>
-                                                    <span className="w-8 text-center font-bold text-sm">{item.quantity}</span>
+                                                    <span className="w-8 text-center font-bold text-sm">{item?.quantity}</span>
                                                     <button
-                                                        onClick={() => updateQuantity(item._id, 'inc')}
+                                                        onClick={() => updateQuantity(item?._id, 'inc')}
                                                         className="p-1 hover:text-indigo-500 disabled:opacity-30"
-                                                        disabled={item.quantity >= item.stock}
+                                                    // disabled={item?.quantity >= item?.productId?.stock}
                                                     >
                                                         <Plus size={16} />
                                                     </button>
                                                 </div>
 
-                                                <span className="font-black text-lg">₹{(item.productPrice * item.quantity).toLocaleString()}</span>
+                                                <span className="font-black text-lg">₹{(item?.productId?.productPrice * item?.quantity).toLocaleString()}</span>
                                             </div>
                                         </div>
                                     </motion.div>
@@ -162,29 +150,29 @@ const Cart = ({ theme = 'dark' }) => {
                                     <div className="space-y-4 text-sm">
                                         <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                                             <span>Subtotal</span>
-                                            <span className="text-zinc-900 dark:text-zinc-200 font-bold">₹{subTotal.toLocaleString()}</span>
+                                            {/* <span className="text-zinc-900 dark:text-zinc-200 font-bold">₹{subTotal.toLocaleString()}</span> */}
                                         </div>
                                         <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                                             <span>GST (18%)</span>
-                                            <span className="text-zinc-900 dark:text-zinc-200 font-bold">₹{gstCharges.toFixed(0).toLocaleString()}</span>
+                                            {/* <span className="text-zinc-900 dark:text-zinc-200 font-bold">₹{gstCharges.toFixed(0).toLocaleString()}</span> */}
                                         </div>
                                         <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
                                             <span>Delivery Charges</span>
-                                            {deliveryCharges === 0 ? (
+                                            {/* {deliveryCharges === 0 ? (
                                                 <span className="text-green-500 font-bold uppercase text-xs bg-green-500/10 px-2 py-0.5 rounded">Free</span>
                                             ) : (
                                                 <span className="text-zinc-900 dark:text-zinc-200 font-bold">₹{deliveryCharges}</span>
-                                            )}
+                                            )} */}
                                         </div>
 
                                         <div className="border-t border-zinc-100 dark:border-zinc-800 my-4 pt-4 flex justify-between items-center">
                                             <span className="font-black text-lg">Total</span>
-                                            <span className="font-black text-2xl text-indigo-600 dark:text-indigo-400">₹{totalPrice.toLocaleString()}</span>
+                                            {/* <span className="font-black text-2xl text-indigo-600 dark:text-indigo-400">₹{totalPrice.toLocaleString()}</span> */}
                                         </div>
                                     </div>
 
                                     <button
-                                        onClick={() => navigate('/checkout')}
+                                        onClick={() => navigate('/client/checkout')}
                                         className="w-full mt-6 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
                                     >
                                         Proceed to Checkout <ArrowRight size={18} />
@@ -201,8 +189,8 @@ const Cart = ({ theme = 'dark' }) => {
                     )}
 
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 
