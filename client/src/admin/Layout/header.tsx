@@ -30,7 +30,7 @@ const Header = ({ isOpen, toggleSidebar }) => {
             .unwrap()
             .then(() => {
                 toast.success("Logout Successful");
-                navigate('/');
+                navigate('/login');
             })
             .catch((error) => {
                 toast.error(`${error}`);

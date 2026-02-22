@@ -40,13 +40,8 @@ const Login = () => {
 
         dispatch(loginUser(userDetails))
             .unwrap()
-            .then((data) => {
-
-                if (data.data.userRole == 'admin')
-                    navigate('/admin');
-                else if (data.data.userRole == 'user')
-                    navigate('/client');
-
+            .then(() => {
+                navigate('/admin/');
                 toast.success("Login Successful")
             })
             .catch((error: string) => {

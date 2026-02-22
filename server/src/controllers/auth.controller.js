@@ -174,7 +174,7 @@ export const register = async (req, res) => {
         if (!userPasswordRegex.test(userPassword))
             return res.status(400).json(apiError({ status: 400, message: "Password format invalid. One Uppercase, one lowercase , one number and one character between @&$ and min length should be 8" }));
 
-        const userNameRegex = /^[a-zA-Z]+$/;
+        const userNameRegex = /^[a-zA-Z0-9]+$/;
         if (!userNameRegex.test(userName))
             return res.status(400).json(apiError({ status: 400, message: "First name can only contains characters" }));
 

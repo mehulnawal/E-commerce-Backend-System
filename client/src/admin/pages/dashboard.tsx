@@ -14,13 +14,13 @@ const Dashboard = () => {
     const { user } = useSelector(state => state.authState);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!user) return;
+    // useEffect(() => {
+    //     if (!user) return;
 
-        if (user.data?.userRole === 'user') {
-            navigate('/client', { replace: true });
-        }
-    }, [user, navigate]);
+    //     if (user.data?.userRole === 'user') {
+    //         navigate('/client', { replace: true });
+    //     }
+    // }, [user, navigate]);
 
     const stats = [
         { name: 'Total Users', value: filteredUsers?.length || 0, icon: Users, color: 'blue' },

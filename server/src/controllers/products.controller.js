@@ -3,7 +3,6 @@ import { Product } from "../models/product.model.js";
 import { apiError } from "../utils/apiError.js"
 import { apiResponse } from "../utils/apiResponse.js";
 import cloudinary from "../config/cloudinary.config.js";
-import jwt from 'jsonwebtoken';
 import fs from 'fs';
 
 export const productsView = async (req, res) => {
@@ -13,19 +12,6 @@ export const productsView = async (req, res) => {
         1. show all products
         2. send data to frontend
         */
-
-        // get user tokens 
-        const token = req.cookies?.accessToken
-
-        if (!token) {
-            return res.status(401).json(apiError({
-                status: 401,
-                message: "Unauthorized"
-            }));
-        }
-
-        // validate refreshToken 
-        const validateRefreshToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 
         // 1. show all products
         const products = await Product.find({
@@ -108,18 +94,6 @@ export const addNewProduct = async (req, res) => {
         };
 
         // 5. save product in db
-        // get user tokens 
-        const token = req.cookies?.accessToken
-
-        if (!token) {
-            return res.status(401).json(apiError({
-                status: 401,
-                message: "Unauthorized"
-            }));
-        }
-
-        // validate refreshToken 
-        const validateRefreshToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 
         const newProduct = new Product({
             productName,
@@ -129,7 +103,7 @@ export const addNewProduct = async (req, res) => {
             productCategory,
             slug: productName,
             productStatus: productStatus || 'published',
-            userId: validateRefreshToken._id
+            userId: req.user._id
         })
         await newProduct.save();
 

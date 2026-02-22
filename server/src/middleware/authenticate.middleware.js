@@ -6,31 +6,30 @@ import jwt from 'jsonwebtoken';
 export const authenticateUser = async (req, res, next) => {
     try {
 
-        /*
-        1. check user from tokens 
-        2. then decode the token 
-        3. check if user is present
-        */
+        const { accessToken } = req.cookies;
 
+        if (!accessToken)
+            return res.status(401).json({ message: "Unauthorized" });
 
-        // 1. check user from tokens 
-        const { refreshToken } = req.cookies;
+        const decoded = jwt.verify(
+            accessToken,
+            process.env.ACCESS_TOKEN_SECRET_KEY
+        );
 
-        if (!refreshToken)
-            return res.status(401).json(apiResponse({ message: "Unauthorized" }));
-
-        // 2. then decode the token 
-        const decodeToken = jwt.decode(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
-
-        // 3. check if user is present
-        const user = await User.findById(decodeToken._id);
+        const user = await User.findById(decoded._id);
 
         if (!user)
-            return res.status(401).json(apiResponse({ message: "Unauthorized" }));
+            return res.status(401).json({ message: "Unauthorized" });
 
+        req.user = user;
         next();
 
     } catch (error) {
-        return res.status(500).json(apiError({ message: "Error in authenticating user", error: error }));
+
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({ message: "Access token expired" });
+        }
+
+        return res.status(403).json({ message: "Invalid token" });
     }
-}
+};

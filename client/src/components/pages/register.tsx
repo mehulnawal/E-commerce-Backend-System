@@ -53,12 +53,11 @@ const Register = () => {
         if (!profileImage) return setFormError("Please upload a profile image.");
 
 
-        const userNameRegex = /^[a-zA-Z]+$/;
+        const userNameRegex = /^[a-zA-Z0-9]+$/;
         if (!formData.name)
             return setFormError("Enter name.");
         if (!userNameRegex.test(formData.name))
             return setFormError("Name can only contains characters");
-
 
         const userNumberRegex = /^[0-9]{10}$/;
         if (!formData.number)
@@ -94,7 +93,7 @@ const Register = () => {
 
         dispatch(registerUser(userDetails))
             .unwrap()
-            .then((data) => {
+            .then(() => {
                 navigate('/admin/');
                 toast.success("Register Successful")
 

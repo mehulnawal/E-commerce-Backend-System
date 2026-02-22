@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema(
                 message: `Only user and admin are allowed. {VALUE} is incorrect`
             },
             lowercase: true,
-            default: 'user'
+            default: 'admin'
         },
 
         userIsBlocked: {
