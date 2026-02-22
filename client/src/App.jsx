@@ -1,4 +1,4 @@
-import { ErrorPage } from '././components/pages/error';
+import { ErrorPage } from './components/pages/error';
 import AdminLayout from './admin/Layout/adminLayout';
 import Admins from './admin/pages/admin';
 import Categories from './admin/pages/categories';
@@ -16,16 +16,6 @@ import VerifyOTP from './components/pages/verifyOtp';
 import Loader from './components/UI/loader';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { ClientLayout } from './components/pages/client/clientLayout';
-import Home from './components/pages/client/home';
-import Shop from './components/pages/client/shop';
-import ProductDetails from './components/pages/client/prouctDetails';
-import Cart from './components/pages/client/cart';
-import Checkout from './components/pages/client/checkout';
-import OrderTracking from './components/pages/client/orderTracking';
-import UserDashboard from './components/pages/client/userDashboard';
-import EditProfile from './components/pages/client/editProfile';
-import { ProtectedRoute } from './components/protectedRoute';
 
 const App = () => {
 
@@ -59,18 +49,6 @@ const App = () => {
           <Route path="/verify-user" element={<VerifyOTP />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/loader" element={<Loader />} />
-
-          {/* <Route path="/client" element={<ClientLayout />}>
-            <Route index element={<Navigate to="/client/home" replace />} />
-            <Route path="home" element={<Home />} />
-            <Route path="shop" element={<Shop />} />
-            <Route path="productDetails/:id" element={<ProductDetails />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="dashboard" element={<UserDashboard />} />
-            <Route path="orderTracking" element={<OrderTracking />} />
-            <Route path="editProfile" element={<EditProfile />} />
-          </Route> */}
 
           <Route
             path="/admin"

@@ -9,11 +9,11 @@ export const getAllTrashProducts = createAsyncThunk('product/trashProducts', asy
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }
@@ -27,11 +27,11 @@ export const restoreProduct = createAsyncThunk('products/restoreProducts', async
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }

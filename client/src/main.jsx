@@ -9,7 +9,9 @@ import { Bounce, ToastContainer } from 'react-toastify'
 import { CookiesProvider } from 'react-cookie';
 import { PersistGate } from 'redux-persist/integration/react'
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById("root");
+
+createRoot(root).render(
   <StrictMode>
 
     <ToastContainer
@@ -25,7 +27,7 @@ createRoot(document.getElementById('root')!).render(
       theme="light"
       transition={Bounce}
     />
-    
+
     <CookiesProvider>
       <PersistGate persistor={persistor}>
         <Provider store={store}>

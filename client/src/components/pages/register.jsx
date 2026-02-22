@@ -101,7 +101,7 @@ const Register = () => {
                 // else if (data.data.userRole == 'user')
                 //     navigate('/user');
             })
-            .catch((error: string) => {
+            .catch((error) => {
                 toast.error(`${error}`);
             })
     };

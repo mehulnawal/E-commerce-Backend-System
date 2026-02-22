@@ -27,7 +27,7 @@ const ResetPassword = () => {
   const [error, setError] = useState("");
   const [timer, setTimer] = useState(30);
 
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const inputRefs = useRef();
 
   useEffect(() => {
     let interval;
@@ -37,7 +37,7 @@ const ResetPassword = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleOtpChange = (e, index) => {
     const value = e.target.value;
     if (isNaN(Number(value))) return;
 
@@ -78,7 +78,7 @@ const ResetPassword = () => {
         toast.success("New password set")
         navigate('/login')
       })
-      .catch((error: string) => {
+      .catch((error) => {
         toast.error(`${error}`);
       })
 

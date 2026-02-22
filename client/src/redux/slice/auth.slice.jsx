@@ -9,18 +9,18 @@ export const loginUser = createAsyncThunk('auth/login', async (userDetails, { re
 
     } catch (error) {
         if (error.response) {
-            const message: string = error.response?.data?.message;
+            const message = error.response?.data?.message;
             return rejectWithValue(message);
         }
         else {
-            const message: string = error.response?.data?.message;
+            const message = error.response?.data?.message;
             return rejectWithValue(message);
         }
     }
 })
 
 // register user
-export const registerUser = createAsyncThunk('auth/register', async (userDetails: object, { rejectWithValue }) => {
+export const registerUser = createAsyncThunk('auth/register', async (userDetails, { rejectWithValue }) => {
     try {
 
         const formData = new FormData();
@@ -35,11 +35,11 @@ export const registerUser = createAsyncThunk('auth/register', async (userDetails
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else if (error) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }
@@ -54,11 +54,11 @@ export const forgetPassword = createAsyncThunk('auth/forgetPassword', async (use
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else if (error) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }
@@ -74,11 +74,11 @@ export const resetPassword = createAsyncThunk('auth/resetPassword', async (userD
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else if (error) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }
@@ -94,11 +94,11 @@ export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValu
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else if (error) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }

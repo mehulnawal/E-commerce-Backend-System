@@ -8,11 +8,11 @@ export const showAllProducts = createAsyncThunk('products/showALlProducts', asyn
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }
@@ -39,11 +39,11 @@ export const addNewProducts = createAsyncThunk('products/addNewProducts', async 
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }
@@ -57,11 +57,11 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }
@@ -89,11 +89,11 @@ export const editProducts = createAsyncThunk('products/editProducts', async (pro
 
     } catch (error) {
         if (error.response) {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
         else {
-            const message: string = error?.response?.data?.message;
+            const message = error?.response?.data?.message;
             return rejectWithValue(message);
         }
     }

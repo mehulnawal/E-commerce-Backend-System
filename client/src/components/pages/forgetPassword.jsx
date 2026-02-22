@@ -33,7 +33,7 @@ const ForgotPassword = () => {
                 toast.success("Otp send")
                 navigate('/reset-password')
             })
-            .catch((error: string) => {
+            .catch((error) => {
                 toast.error(`${error}`);
             })
     };

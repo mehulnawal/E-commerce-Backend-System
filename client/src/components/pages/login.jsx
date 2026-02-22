@@ -44,7 +44,7 @@ const Login = () => {
                 navigate('/admin/');
                 toast.success("Login Successful")
             })
-            .catch((error: string) => {
+            .catch((error) => {
                 toast.error(`${error}`);
             })
 
