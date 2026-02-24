@@ -16,13 +16,22 @@ import cartRouter from './src/routes/client/clientCart.route.js';
 dotenv.config();
 const app = express();
 
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:5173'].filter(Boolean);
+
 // middlewares
+const options = {
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-}))
+app.use(cors(options))
 app.use(cookieParser());
 
 // connect db
